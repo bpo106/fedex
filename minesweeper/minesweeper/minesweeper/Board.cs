@@ -10,8 +10,8 @@ namespace minesweeper
 {
     public class Board
     {
-        private const int tileWidth = 50;
-        private const int tileHeight = 50;
+        private const int tileWidth = 30;
+        private const int tileHeight = 30;
 
         private Canvas Canvas { get; set; }
         private SolidColorBrush LineColor { get; set; } = SystemColors.WindowFrameBrush;
@@ -124,9 +124,15 @@ namespace minesweeper
             SetPosition(canvas, x, y);
         }
 
+        public void AddButton(Button button, double x, double y)
+        {
+            Canvas.Children.Add(button);
+            Canvas.SetLeft(button, x);
+            Canvas.SetTop(button, y);
+        }
+
         public void SetPosition(UIElement uIElement, double x, double y)
         {
-            Canvas.Children.Add(uIElement);
             Canvas.SetLeft(uIElement, x);
             Canvas.SetTop(uIElement, y);
         }

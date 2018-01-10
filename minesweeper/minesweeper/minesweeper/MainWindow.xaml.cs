@@ -20,6 +20,26 @@ namespace minesweeper
     /// </summary>
     public partial class MainWindow : Window
     {
+        Board board;
+
+        public MainWindow()
+        {
+            InitializeComponent();
+            board = new Board(canvas);
+            DrawBackground(board);
+            DrawBoard(board);
+        }
+
+        static void DrawBackground (Board board)
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                for (int j = 0; j < 20; j++)
+                {
+                    board.AddImage("./Images/1.gif", 30 * i, 30 * j);
+                }
+            }
+        }
 
         static void DrawBoard (Board board)
         {
@@ -27,17 +47,12 @@ namespace minesweeper
             {
                 for (int j = 0; j < 20; j++)
                 {
-                    var button = new Button() { Width = 20, Height = 20 };
-                    board.SetPosition(button, 20 * i, 20 * j);
+                    var button = new Button() { Width = 30, Height = 30 };
+                    board.AddButton(button, 30 * i, 30 * j);
                 }
             }
         }
 
-        public MainWindow()
-        {
-            InitializeComponent();
-            var board = new Board(canvas);
-            DrawBoard(board);
-        }
+
     }
 }
