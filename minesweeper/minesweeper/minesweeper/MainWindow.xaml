@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:minesweeper"
         mc:Ignorable="d"
-        Title="MainWindow" Height="Auto" Width="Auto">
+        Title="Minesweeper" Height="631" Width="608">
     <Grid>
-        
+        <Canvas Name="canvas" Height="600" Width="600"/>
     </Grid>
 </Window>

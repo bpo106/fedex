@@ -25,7 +25,7 @@ namespace minesweeper
                 Tile currentTile = area[randy.Next(area.GetLength(0)), randx.Next(area.GetLength(1))];
                 if (!currentTile.hasMine)
                 {
-                    currentTile.setMine();
+                    currentTile.SetMine();
                     mines--;
                 }
             }
