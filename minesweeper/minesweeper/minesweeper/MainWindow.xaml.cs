@@ -21,34 +21,35 @@ namespace minesweeper
     public partial class MainWindow : Window
     {
         Board board;
+        List<Tile> area = new List<Tile>();
 
         public MainWindow()
         {
             InitializeComponent();
+            for (int i = 0; i < 400; i++) {
+                area.Add(new Tile());
+            }
             board = new Board(canvas);
-            DrawBackground(board);
+            GameLogic.SetArea(area, 20, 10);
+            area[5].isRevealed = true;
             DrawBoard(board);
         }
 
-        static void DrawBackground (Board board)
-        {
-            for (int i = 0; i < 20; i++)
-            {
-                for (int j = 0; j < 20; j++)
-                {
-                    board.AddImage("./Images/1.gif", 30 * i, 30 * j);
-                }
-            }
-        }
-
-        static void DrawBoard (Board board)
+        void DrawBoard (Board board)
         {
             for (int i = 0; i < 20; i++)
             {
                 for (int j = 0; j < 20; j++)
                 {
                     var button = new Button() { Width = 30, Height = 30 };
-                    board.AddButton(button, 30 * i, 30 * j);
+                    if (area[20 *j + i].isRevealed)
+                    {
+                        board.AddImage("./Images/1.gif", 30 * i, 30 * j);
+                    }
+                    else
+                    {
+                        board.AddButton(button, 30 * i, 30 * j);
+                    }
                 }
             }
         }

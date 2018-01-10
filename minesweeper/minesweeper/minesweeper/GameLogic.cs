@@ -6,48 +6,47 @@ using System.Threading.Tasks;
 
 namespace minesweeper
 {
-    public class GameLogic
+    public static class GameLogic
     {
-        public Tile[,] SetArea(int x, int y, int mines)
+        public static void SetArea(List<Tile> area, int rows, int mines)
         {
-            Tile[,] area = new Tile[y,x];
-            PlaceMines(area, mines);
-            SetValues(area);
-            return area;
+            PlaceMines(area, rows, mines);
+            SetValues(area, rows);
         }
 
-        void PlaceMines (Tile[,] area, int mines)
+        static void PlaceMines (List<Tile> area, int rows, int mines)
         {
             var randx = new Random();
             var randy = new Random();
             while (mines > 0)
             {
-                Tile currentTile = area[randy.Next(area.GetLength(0)), randx.Next(area.GetLength(1))];
-                if (!currentTile.hasMine)
+                int x = randx.Next(0, area.Count/rows);
+                int y = randy.Next(0, rows);
+                if (!(area[rows * y + x].hasMine))
                 {
-                    currentTile.SetMine();
+                    area[rows * y + x].SetMine();
                     mines--;
                 }
             }
         }
 
-        void SetValues (Tile[,] area)
+        static void SetValues (List<Tile> area, int rows)
         {
-            for (int i = 0; i < area.GetLength(1); i++)
+            for (int i = 0; i < area.Count / rows; i++)
             {
-                for (int j = 0; j < area.GetLength(0); j++)
+                for (int j = 0; j < rows; j++)
                 {
-                    if ((i * j > 0 && area[j - 1, i - 1].hasMine) ||
-                        (i > 0 && area[j, i - 1].hasMine) ||
-                        (j > 0 && area[j - 1, i].hasMine) ||
-                        (i < area.GetLength(1) - 1 && j > 0 && area[j - 1, i + 1].hasMine) ||
-                        (i < area.GetLength(1) - 1 && area[j, i + 1].hasMine) ||
-                        (i < area.GetLength(1) - 1 && j < area.GetLength(0) - 1 && area[j + 1, i + 1].hasMine) ||
-                        (j < area.GetLength(0) - 1 && area[j + 1, i].hasMine) ||
-                        (i > 0  && j < area.GetLength(0) - 1 && area[j + 1, i - 1].hasMine)
+                    if ((i * j > 0 && area[rows * (j - 1) + i - 1].hasMine) || //nem bal felső
+                        (j > 0 && area[rows * (j - 1) + i].hasMine) || // nem felső
+                        (j > 0 && i < area.Count / rows - 1 && area[rows * (j - 1) + i + 1].hasMine) || // nem jobb felső
+                        (i < area.Count / rows - 1 && area[rows * j + i + 1].hasMine) || // nem jobb
+                        (i < area.Count / rows - 1 && j < rows - 1 && area[rows * (j + 1) + i + 1].hasMine) || // nem jobb alsó
+                        (j < rows - 1 && area[rows * (j + 1) + i].hasMine) || //nem alsó
+                        (i > 0 && j < rows - 1 && area[rows * (j + 1) + i - 1].hasMine) || // nem bal alsó
+                        (i > 0 && area[rows * j + i - 1].hasMine) //  nem bal
                         )
                     {
-                        area[j, i].neighbouringMines++;
+                        area[rows * j + i].neighbouringMines++;
                     }
                 }
             }

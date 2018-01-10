@@ -8,9 +8,18 @@ namespace minesweeper
 {
     public class Tile
     {
-        public bool hasMine = false;
-        public bool isProtected = false;
-        public int neighbouringMines = 0;
+        public bool hasMine;
+        public bool isProtected;
+        public int neighbouringMines;
+        public bool isRevealed;
+
+        public Tile()
+        {
+            hasMine = false;
+            isProtected = false;
+            neighbouringMines = 0;
+            isRevealed = false;
+        }
 
         public void SetMine ()
         {
