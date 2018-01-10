@@ -97,7 +97,21 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\8.png" />
+    <Resource Include="Images\button.png" />
+    <Content Include="Images\button.svg" />
+    <Resource Include="Images\flag.png" />
+    <Content Include="Images\flag.svg" />
+    <Resource Include="Images\mine.png" />
+    <Resource Include="Images\0.png" />
     <Content Include="Images\0.svg" />
+    <Resource Include="Images\2.png" />
+    <Resource Include="Images\3.png" />
+    <Resource Include="Images\4.png" />
+    <Resource Include="Images\5.png" />
+    <Resource Include="Images\6.png" />
+    <Resource Include="Images\7.png" />
+    <Resource Include="Images\1.png" />
     <Content Include="Images\1.svg" />
     <Content Include="Images\2.svg" />
     <Content Include="Images\3.svg" />
