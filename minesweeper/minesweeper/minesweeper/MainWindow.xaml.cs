@@ -44,7 +44,7 @@ namespace minesweeper
                     var button = new Button() { Width = 30, Height = 30 };
                     if (area[20 *j + i].isRevealed)
                     {
-                        board.AddImage("./Images/1.gif", 30 * i, 30 * j);
+                        board.AddImage("./Images/1.svg", 30 * i, 30 * j);
                     }
                     else
                     {

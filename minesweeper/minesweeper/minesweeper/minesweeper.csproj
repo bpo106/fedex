@@ -97,9 +97,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\1.gif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    <Content Include="Images\0.svg" />
+    <Content Include="Images\1.svg" />
+    <Content Include="Images\2.svg" />
+    <Content Include="Images\3.svg" />
+    <Content Include="Images\4.svg" />
+    <Content Include="Images\5.svg" />
+    <Content Include="Images\6.svg" />
+    <Content Include="Images\7.svg" />
+    <Content Include="Images\8.svg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
