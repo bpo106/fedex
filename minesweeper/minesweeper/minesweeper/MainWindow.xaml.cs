@@ -30,40 +30,8 @@ namespace minesweeper
                 area.Add(new Tile());
             }
             board = new Board(canvas);
-            GameLogic.SetArea(area, 20, 100);
-            area[5].isRevealed = true;
-            DrawBoard(board);
+            GameLogic.SetArea(area, 20, 50);
+            GameLogic.DrawBoard(board, area);
         }
-
-        void DrawBoard (Board board)
-        {
-            for (int i = 0; i < 20; i++)
-            {
-                for (int j = 0; j < 20; j++)
-                {
-                    var button = new Button() { Width = 30, Height = 30 };
-                    string file;
-                    if (area[20 *j + i].isRevealed)
-                    {
-                        if (area[20 * j + i].hasMine)
-                        {
-                            board.AddImage("./Images/0.png", 30 * i, 30 * j);
-                            file = "./Images/mine.png";
-                        }
-                        else
-                        {
-                            file = "./Images/" + area[20 * j + i].neighbouringMines.ToString() + ".png";
-                        }
-                        board.AddImage(file, 30 * i, 30 * j);
-                    }
-                    else
-                    {
-                        board.AddButton(button, 30 * i, 30 * j);
-                    }
-                }
-            }
-        }
-
-
     }
 }

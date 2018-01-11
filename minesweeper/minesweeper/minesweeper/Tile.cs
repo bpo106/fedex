@@ -18,7 +18,7 @@ namespace minesweeper
             hasMine = false;
             isProtected = false;
             neighbouringMines = 0;
-            isRevealed = true;
+            isRevealed = false;
         }
 
         public void SetMine ()
