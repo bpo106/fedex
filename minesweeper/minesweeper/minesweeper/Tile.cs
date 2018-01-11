@@ -36,13 +36,13 @@ namespace minesweeper
 
         public void Reveal ()
         {
-            if (hasMine)
+            if (!isProtected)
             {
-                //ASDASDASDASD
-            }
-            else
-            {
-                //asdasdasdasdasd
+                isRevealed = true;
+                if (hasMine)
+                {
+                    //ASDASDASDASD
+                }
             }
         }
     }

@@ -57,28 +57,52 @@ namespace minesweeper
                 for (int j = 0; j < 20; j++)
                 {
                     var image = new Image();
-                    image.Source = new BitmapImage(new Uri("./Images/button.png", UriKind.Relative));
-                    var button = new Button() { Width = 30, Height = 30, Content = image };
-                    string file;
-                    if (area[20 * j + i].isRevealed)
+                    if (area[20 * j + i].isProtected)
                     {
-                        if (area[20 * j + i].hasMine)
-                        {
-                            board.AddImage("./Images/0.png", 30 * i, 30 * j);
-                            file = "./Images/mine.png";
-                        }
-                        else
-                        {
-                            file = "./Images/" + area[20 * j + i].neighbouringMines.ToString() + ".png";
-                        }
-                        board.AddImage(file, 30 * i, 30 * j);
+                        image.Source = new BitmapImage(new Uri("./Images/flag.png", UriKind.Relative));
                     }
                     else
+                    {
+                        image.Source = new BitmapImage(new Uri("./Images/button.png", UriKind.Relative));
+                    }
+                    var button = new Button() { Width = 30, Height = 30, Content = image };
+                    button.Click += new RoutedEventHandler(ClickHandlerLeft);
+                    //button.Click += ClickHandlerRight;
+                    string file;
+                    if (area[20 * j + i].hasMine)
+                    {
+                        board.AddImage("./Images/0.png", 30 * i, 30 * j);
+                        file = "./Images/mine.png";
+                    }
+                    else
+                    {
+                        file = "./Images/" + area[20 * j + i].neighbouringMines.ToString() + ".png";
+                    }
+                    board.AddImage(file, 30 * i, 30 * j);
+                    if (!area[20 * j + i].isRevealed)
                     {
                         board.AddButton(button, 30 * i, 30 * j);
                     }
                 }
             }
+        }
+
+        static private void ClickHandlerLeft (object sender, RoutedEventArgs e)
+        {
+            Button clicked = (Button)sender;
+            clicked.Visibility = Visibility.Hidden;
+            //area[20 * j + i].Reveal();
+            //DrawBoard(board, area);
+            //átállítja a mező felfedettségi állapotát
+            //újrarajzolja a táblát
+        }
+
+        static private void ClickHandlerRight (object sender, RoutedEventArgs e)
+        {
+            //area[20 * j + i].Flag();
+            //DrawBoard(board, area);
+            //átállítja a zászlót
+            //újrarajzolja a táblát
         }
     }
 }
