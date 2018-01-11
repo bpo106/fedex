@@ -16,6 +16,7 @@ namespace minesweeper
         private Canvas Canvas { get; set; }
         private SolidColorBrush LineColor { get; set; } = SystemColors.WindowFrameBrush;
         private SolidColorBrush ShapeColor { get; set; } = new SolidColorBrush(Colors.Black);
+        public RoutedEventHandler Click { get; internal set; }
 
         public Board(Canvas canvas)
         {

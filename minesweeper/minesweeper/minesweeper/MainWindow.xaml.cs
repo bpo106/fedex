@@ -30,7 +30,7 @@ namespace minesweeper
                 area.Add(new Tile());
             }
             board = new Board(canvas);
-            GameLogic.SetArea(area, 20, 50);
+            GameLogic.SetArea(area, 20, 10);
             GameLogic.DrawBoard(board, area);
         }
     }

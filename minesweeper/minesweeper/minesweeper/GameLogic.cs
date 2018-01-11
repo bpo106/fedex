@@ -5,12 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace minesweeper
 {
     public static class GameLogic
     {
+        private static IInputElement canvas;
+
         public static void SetArea(List<Tile> area, int rows, int mines)
         {
             PlaceMines(area, rows, mines);
@@ -67,7 +70,7 @@ namespace minesweeper
                     }
                     var button = new Button() { Width = 30, Height = 30, Content = image };
                     button.Click += new RoutedEventHandler(ClickHandlerLeft);
-                    //button.Click += ClickHandlerRight;
+                    button.MouseDown += new MouseButtonEventHandler(ClickHandlerRight);
                     string file;
                     if (area[20 * j + i].hasMine)
                     {
@@ -87,22 +90,27 @@ namespace minesweeper
             }
         }
 
-        static private void ClickHandlerLeft (object sender, RoutedEventArgs e)
+        static private void ClickHandlerLeft(object sender, RoutedEventArgs e)
         {
             Button clicked = (Button)sender;
             clicked.Visibility = Visibility.Hidden;
-            //area[20 * j + i].Reveal();
-            //DrawBoard(board, area);
+            Point p = Mouse.GetPosition(canvas);
+            int x = (int)(p.X - 25) / 30;
+            int y = (int)(p.Y - 25) / 30;
+            MessageBox.Show(x.ToString() + " " + y.ToString());
             //átállítja a mező felfedettségi állapotát
-            //újrarajzolja a táblát
         }
 
-        static private void ClickHandlerRight (object sender, RoutedEventArgs e)
+        static private void ClickHandlerRight (object sender, MouseButtonEventArgs e)
         {
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                Button clicked = (Button)sender;
+                var image = new Image { Source = new BitmapImage(new Uri("./Images/flag.png", UriKind.Relative)) };
+                clicked.Content = image;
+            }
             //area[20 * j + i].Flag();
-            //DrawBoard(board, area);
             //átállítja a zászlót
-            //újrarajzolja a táblát
         }
     }
 }
