@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace minesweeper
 {
@@ -20,6 +8,7 @@ namespace minesweeper
     /// </summary>
     public partial class MainWindow : Window
     {
+        GameLogic gameLogic = new GameLogic();
         Board board;
         List<Tile> area = new List<Tile>();
 
@@ -30,8 +19,8 @@ namespace minesweeper
                 area.Add(new Tile());
             }
             board = new Board(canvas);
-            GameLogic.SetArea(area, 20, 10);
-            GameLogic.DrawBoard(board, area);
+            gameLogic.SetArea(area, 20, 50);
+            gameLogic.DrawBoard(board, area);
         }
     }
 }

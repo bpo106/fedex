@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -10,17 +7,17 @@ using System.Windows.Media.Imaging;
 
 namespace minesweeper
 {
-    public static class GameLogic
+    public class GameLogic
     {
-        private static IInputElement canvas;
+        private IInputElement canvas;
 
-        public static void SetArea(List<Tile> area, int rows, int mines)
+        public void SetArea(List<Tile> area, int rows, int mines)
         {
             PlaceMines(area, rows, mines);
             SetValues(area, rows);
         }
 
-        static void PlaceMines (List<Tile> area, int rows, int mines)
+        void PlaceMines (List<Tile> area, int rows, int mines)
         {
             var random = new Random();
             while (mines > 0)
@@ -35,7 +32,7 @@ namespace minesweeper
             }
         }
 
-        static void SetValues (List<Tile> area, int rows)
+        void SetValues (List<Tile> area, int rows)
         {
             for (int i = 0; i < area.Count / rows; i++)
             {
@@ -53,7 +50,7 @@ namespace minesweeper
             }
         }
 
-        static public void DrawBoard (Board board, List<Tile> area)
+        public void DrawBoard (Board board, List<Tile> area)
         {
             for (int i = 0; i < 20; i++)
             {
@@ -90,18 +87,18 @@ namespace minesweeper
             }
         }
 
-        static private void ClickHandlerLeft(object sender, RoutedEventArgs e)
+        private void ClickHandlerLeft(object sender, RoutedEventArgs e)
         {
             Button clicked = (Button)sender;
             clicked.Visibility = Visibility.Hidden;
             Point p = Mouse.GetPosition(canvas);
             int x = (int)(p.X - 25) / 30;
             int y = (int)(p.Y - 25) / 30;
-            MessageBox.Show(x.ToString() + " " + y.ToString());
+            //MessageBox.Show(x.ToString() + " " + y.ToString());
             //átállítja a mező felfedettségi állapotát
         }
 
-        static private void ClickHandlerRight (object sender, MouseButtonEventArgs e)
+        private void ClickHandlerRight (object sender, MouseButtonEventArgs e)
         {
             if (e.RightButton == MouseButtonState.Pressed)
             {
