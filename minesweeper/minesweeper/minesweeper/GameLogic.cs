@@ -9,7 +9,17 @@ namespace minesweeper
 {
     public class GameLogic
     {
+        public Board board;
+        public List<Tile> area;
         private IInputElement canvas;
+        private int tempx;
+        private int tempy;
+
+        public GameLogic(Board board, List<Tile> area)
+        {
+            this.area = area;
+            this.board = board;
+        }
 
         public void SetArea(List<Tile> area, int rows, int mines)
         {
@@ -92,9 +102,9 @@ namespace minesweeper
             Button clicked = (Button)sender;
             clicked.Visibility = Visibility.Hidden;
             Point p = Mouse.GetPosition(canvas);
-            int x = (int)(p.X - 25) / 30;
-            int y = (int)(p.Y - 25) / 30;
-            //MessageBox.Show(x.ToString() + " " + y.ToString());
+            tempx = (int)(p.X - 25) / 30;
+            tempy = (int)(p.Y - 25) / 30;
+            //MessageBox.Show(tempx.ToString() + " " + tempy.ToString());
             //átállítja a mező felfedettségi állapotát
         }
 
@@ -103,7 +113,19 @@ namespace minesweeper
             if (e.RightButton == MouseButtonState.Pressed)
             {
                 Button clicked = (Button)sender;
-                var image = new Image { Source = new BitmapImage(new Uri("./Images/flag.png", UriKind.Relative)) };
+                Point p = Mouse.GetPosition(canvas);
+                tempx = (int)(p.X - 25) / 30;
+                tempy = (int)(p.Y - 25) / 30;
+                area[20 * tempy + tempx].Flag(board, tempx, tempy);
+                var image = new Image();
+                if (area[20 * tempy + tempx].isProtected)
+                {
+                    image.Source = new BitmapImage(new Uri("./Images/flag.png", UriKind.Relative));
+                }
+                else
+                {
+                    image.Source = new BitmapImage(new Uri("./Images/button.png", UriKind.Relative));
+                }
                 clicked.Content = image;
             }
             //area[20 * j + i].Flag();

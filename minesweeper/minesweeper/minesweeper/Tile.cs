@@ -29,7 +29,7 @@ namespace minesweeper
             }
         }
 
-        public void Flag ()
+        public void Flag (Board board, int x, int y)
         {
             isProtected = !isProtected;
         }
