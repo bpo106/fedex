@@ -14,11 +14,13 @@ namespace minesweeper
         private IInputElement canvas;
         private int tempx;
         private int tempy;
+        private bool amIDead;
 
         public GameLogic(Board board, List<Tile> area)
         {
             this.area = area;
             this.board = board;
+            amIDead = false;
         }
 
         public void SetArea(List<Tile> area, int rows, int mines)
@@ -99,53 +101,58 @@ namespace minesweeper
 
         private void ClickHandlerLeft(object sender, RoutedEventArgs e)
         {
-            Point p = Mouse.GetPosition(canvas);
-            tempx = (int)(p.X - 25) / 30;
-            tempy = (int)(p.Y - 25) / 30;
-            if (!(area[20 * tempy + tempx].isProtected))
+            if (!amIDead)
             {
-                Button clicked = (Button)sender;
-                clicked.Visibility = Visibility.Hidden;
-            }
-            if (area[20 * tempy + tempx].hasMine && !(area[20 * tempy + tempx].isProtected))
-            {
-                for (int i = 0; i < 20; i++)
+                Point p = Mouse.GetPosition(canvas);
+                tempx = (int)(p.X - 25) / 30;
+                tempy = (int)(p.Y - 25) / 30;
+                if (!(area[20 * tempy + tempx].isProtected))
                 {
-                    for (int j = 0; j < 20; j++)
+                    Button clicked = (Button)sender;
+                    clicked.Visibility = Visibility.Hidden;
+                }
+                if (area[20 * tempy + tempx].hasMine && !(area[20 * tempy + tempx].isProtected))
+                {
+                    amIDead = true;
+                    for (int i = 0; i < 20; i++)
                     {
-                        area[20 * j + i].isProtected = true;
-                        if (area[20 * j + i].hasMine)
+                        for (int j = 0; j < 20; j++)
                         {
-                            area[20 * j + i].isRevealed = true;
-                            board.AddImage("./Images/0.png", 30 * i, 30 * j);
-                            board.AddImage("./Images/mine.png", 30 * i, 30 * j);
+                            if (area[20 * j + i].hasMine)
+                            {
+                                board.AddImage("./Images/0.png", 30 * i, 30 * j);
+                                board.AddImage("./Images/mine.png", 30 * i, 30 * j);
+                            }
                         }
                     }
+                    MessageBox.Show("You died lol");
                 }
-                MessageBox.Show("You died lol");
+                //MessageBox.Show(tempx.ToString() + " " + tempy.ToString());
             }
-            //MessageBox.Show(tempx.ToString() + " " + tempy.ToString());
         }
 
         private void ClickHandlerRight (object sender, MouseButtonEventArgs e)
         {
-            if (e.RightButton == MouseButtonState.Pressed)
+            if (!amIDead)
             {
-                Button clicked = (Button)sender;
-                Point p = Mouse.GetPosition(canvas);
-                tempx = (int)(p.X - 25) / 30;
-                tempy = (int)(p.Y - 25) / 30;
-                area[20 * tempy + tempx].Flag(board, tempx, tempy);
-                var image = new Image();
-                if (area[20 * tempy + tempx].isProtected)
+                if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    image.Source = new BitmapImage(new Uri("./Images/flag.png", UriKind.Relative));
+                    Button clicked = (Button)sender;
+                    Point p = Mouse.GetPosition(canvas);
+                    tempx = (int)(p.X - 25) / 30;
+                    tempy = (int)(p.Y - 25) / 30;
+                    area[20 * tempy + tempx].Flag(board, tempx, tempy);
+                    var image = new Image();
+                    if (area[20 * tempy + tempx].isProtected)
+                    {
+                        image.Source = new BitmapImage(new Uri("./Images/flag.png", UriKind.Relative));
+                    }
+                    else
+                    {
+                        image.Source = new BitmapImage(new Uri("./Images/button.png", UriKind.Relative));
+                    }
+                    clicked.Content = image;
                 }
-                else
-                {
-                    image.Source = new BitmapImage(new Uri("./Images/button.png", UriKind.Relative));
-                }
-                clicked.Content = image;
             }
         }
     }
