@@ -14,19 +14,25 @@ namespace minesweeper
         private IInputElement canvas;
         private int tempx;
         private int tempy;
-        private bool amIDead;
+        private bool amIEnded;
+        private int size = 400; //Ez majd később paraméterként jön át
+        private int coveredMinelessTiles;
+        private int mines;
 
-        public GameLogic(Board board, List<Tile> area)
+
+        public GameLogic(Board board, List<Tile> area, int mines)
         {
             this.area = area;
             this.board = board;
-            amIDead = false;
+            amIEnded = false;
+            this.mines = mines;
         }
 
-        public void SetArea(List<Tile> area, int rows, int mines)
+        public void SetArea(List<Tile> area, int rows)
         {
             PlaceMines(area, rows, mines);
             SetValues(area, rows);
+            coveredMinelessTiles = size - mines;
         }
 
         void PlaceMines (List<Tile> area, int rows, int mines)
@@ -80,7 +86,6 @@ namespace minesweeper
                     var button = new Button() { Width = 30, Height = 30, Content = image };
                     button.Click += new RoutedEventHandler(ClickHandlerLeft);
                     button.MouseDown += new MouseButtonEventHandler(ClickHandlerRight);
-                    string file;
                     if (!(area[20 * j + i].hasMine))
                     {
                         board.AddImage("./Images/" + area[20 * j + i].neighbouringMines.ToString() + ".png", 30 * i, 30 * j);
@@ -93,21 +98,46 @@ namespace minesweeper
             }
         }
 
+        private void RevealNextTiles (int x, int y)
+        {
+            if (area[20 * y + x].neighbouringMines == 0)
+            {
+                board.AddImage("./Images/" + area[20 * y + x].neighbouringMines.ToString() + ".png", 30 * x, 30 * y);
+                if (x > 1 && y > 1) RevealNextTiles(x - 1, y - 1);
+                if (x > 1) RevealNextTiles(x - 1, y);
+                if (x > 1 && y < 20 - 2) RevealNextTiles(x - 1, y + 1);
+                if (y < 20 - 2) RevealNextTiles(x, y - 1);
+                if (x < 20 - 2 && y < 20 - 2)  RevealNextTiles(x + 1, y + 1);
+                if (x < 20 - 2) RevealNextTiles(x, y + 1);
+                if (x < 20 - 2 && y > 0) RevealNextTiles(x - 1, y + 1);
+                if (y > 1) RevealNextTiles(x, y - 1);
+            }
+        }
+
         private void ClickHandlerLeft(object sender, RoutedEventArgs e)
         {
-            if (!amIDead)
+            if (!amIEnded)
             {
                 Point p = Mouse.GetPosition(canvas);
                 tempx = (int)(p.X - 25) / 30;
                 tempy = (int)(p.Y - 25) / 30;
                 if (!(area[20 * tempy + tempx].isProtected))
                 {
-                    Button clicked = (Button)sender;
-                    clicked.Visibility = Visibility.Hidden;
+                    /*if (area[20 * tempy + tempx].neighbouringMines == 0)
+                    {
+                        RevealNextTiles(tempx, tempy);
+                    }
+                    else
+                    {*/
+                        Button clicked = (Button)sender;
+                        clicked.Visibility = Visibility.Hidden;
+                        coveredMinelessTiles--;
+                        Win();
+                    //}
                 }
                 if (area[20 * tempy + tempx].hasMine && !(area[20 * tempy + tempx].isProtected))
                 {
-                    amIDead = true;
+                    amIEnded = true;
                     for (int i = 0; i < 20; i++)
                     {
                         for (int j = 0; j < 20; j++)
@@ -126,15 +156,15 @@ namespace minesweeper
                             }
                         }
                     }
-                    //MessageBox.Show("You died lol");
+                    MessageBox.Show("You died lol");
                 }
                 //MessageBox.Show(tempx.ToString() + " " + tempy.ToString());
             }
         }
 
-        private void ClickHandlerRight (object sender, MouseButtonEventArgs e)
+        private void ClickHandlerRight(object sender, MouseButtonEventArgs e)
         {
-            if (!amIDead)
+            if (!amIEnded)
             {
                 if (e.RightButton == MouseButtonState.Pressed)
                 {
@@ -154,6 +184,22 @@ namespace minesweeper
                     }
                     clicked.Content = image;
                 }
+            }
+        }
+
+        private void Win()
+        {
+            if (coveredMinelessTiles == 0)
+            {
+                amIEnded = true;
+                for (int i = 0; i < area.Count; i++)
+                {
+                    if (area[i].hasMine)
+                    {
+                        board.AddImage("./Images/flag.png", 30 * (i % 20), 30 * (i / 20));
+                    }
+                }
+                MessageBox.Show("You won!");
             }
         }
     }

@@ -20,9 +20,9 @@ namespace minesweeper
             }
             board = new Board(canvas);
 
-            gameLogic = new GameLogic(board, area);
+            gameLogic = new GameLogic(board, area, 50);
             gameLogic.area = area;
-            gameLogic.SetArea(area, 20, 50);
+            gameLogic.SetArea(area, 20);
             gameLogic.DrawBoard(board, area);
         }
     }
