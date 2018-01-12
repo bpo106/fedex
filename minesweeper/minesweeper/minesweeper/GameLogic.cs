@@ -99,11 +99,14 @@ namespace minesweeper
 
         private void ClickHandlerLeft(object sender, RoutedEventArgs e)
         {
-            Button clicked = (Button)sender;
-            clicked.Visibility = Visibility.Hidden;
             Point p = Mouse.GetPosition(canvas);
             tempx = (int)(p.X - 25) / 30;
             tempy = (int)(p.Y - 25) / 30;
+            if (!(area[20 * tempy + tempx].isProtected))
+            {
+                Button clicked = (Button)sender;
+                clicked.Visibility = Visibility.Hidden;
+            }
             //MessageBox.Show(tempx.ToString() + " " + tempy.ToString());
             //átállítja a mező felfedettségi állapotát
         }
@@ -128,8 +131,6 @@ namespace minesweeper
                 }
                 clicked.Content = image;
             }
-            //area[20 * j + i].Flag();
-            //átállítja a zászlót
         }
     }
 }
