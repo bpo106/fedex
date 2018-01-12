@@ -11,31 +11,31 @@ namespace minesweeper
     {
         public Board board;
         public List<Tile> area;
+        private int rows;
         private IInputElement canvas;
         private int tempx;
         private int tempy;
         private bool amIEnded;
-        private int size = 400; //Ez majd később paraméterként jön át
         private int coveredMinelessTiles;
         private int mines;
 
-
-        public GameLogic(Board board, List<Tile> area, int mines)
+        public GameLogic(Board board, List<Tile> area, int rows, int mines)
         {
             this.area = area;
             this.board = board;
             amIEnded = false;
             this.mines = mines;
+            this.rows = rows;
+            coveredMinelessTiles = area.Count - mines;
         }
 
-        public void SetArea(List<Tile> area, int rows)
+        public void SetArea(List<Tile> area)
         {
-            PlaceMines(area, rows, mines);
-            SetValues(area, rows);
-            coveredMinelessTiles = size - mines;
+            PlaceMines();
+            SetValues();
         }
 
-        void PlaceMines (List<Tile> area, int rows, int mines)
+        void PlaceMines ()
         {
             var random = new Random();
             while (mines > 0)
@@ -50,7 +50,7 @@ namespace minesweeper
             }
         }
 
-        void SetValues (List<Tile> area, int rows)
+        void SetValues ()
         {
             for (int i = 0; i < area.Count / rows; i++)
             {
@@ -70,12 +70,12 @@ namespace minesweeper
 
         public void DrawBoard (Board board, List<Tile> area)
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < area.Count / rows; i++)
             {
-                for (int j = 0; j < 20; j++)
+                for (int j = 0; j < rows; j++)
                 {
                     var image = new Image();
-                    if (area[20 * j + i].isProtected)
+                    if (area[area.Count / rows * j + i].isProtected)
                     {
                         image.Source = new BitmapImage(new Uri("./Images/flag.png", UriKind.Relative));
                     }
@@ -86,11 +86,11 @@ namespace minesweeper
                     var button = new Button() { Width = 30, Height = 30, Content = image };
                     button.Click += new RoutedEventHandler(ClickHandlerLeft);
                     button.MouseDown += new MouseButtonEventHandler(ClickHandlerRight);
-                    if (!(area[20 * j + i].hasMine))
+                    if (!(area[area.Count / rows * j + i].hasMine))
                     {
-                        board.AddImage("./Images/" + area[20 * j + i].neighbouringMines.ToString() + ".png", 30 * i, 30 * j);
+                        board.AddImage("./Images/" + area[area.Count / rows * j + i].neighbouringMines.ToString() + ".png", 30 * i, 30 * j);
                     }
-                    if (!area[20 * j + i].isRevealed)
+                    if (!area[area.Count / rows * j + i].isRevealed)
                     {
                         board.AddButton(button, 30 * i, 30 * j);
                     }
@@ -100,17 +100,31 @@ namespace minesweeper
 
         private void RevealNextTiles (int x, int y)
         {
-            if (area[20 * y + x].neighbouringMines == 0)
+            if (!(area[area.Count / rows * y + x].hasMine) && !(area[area.Count / rows * y + x].isRevealed) && !(area[20 * y + x].isProtected))
             {
+                area[area.Count / rows * y + x].isRevealed = true;
                 board.AddImage("./Images/" + area[20 * y + x].neighbouringMines.ToString() + ".png", 30 * x, 30 * y);
-                if (x > 1 && y > 1) RevealNextTiles(x - 1, y - 1);
-                if (x > 1) RevealNextTiles(x - 1, y);
-                if (x > 1 && y < 20 - 2) RevealNextTiles(x - 1, y + 1);
-                if (y < 20 - 2) RevealNextTiles(x, y - 1);
-                if (x < 20 - 2 && y < 20 - 2)  RevealNextTiles(x + 1, y + 1);
-                if (x < 20 - 2) RevealNextTiles(x, y + 1);
-                if (x < 20 - 2 && y > 0) RevealNextTiles(x - 1, y + 1);
-                if (y > 1) RevealNextTiles(x, y - 1);
+                coveredMinelessTiles--;
+
+                if (area[area.Count / rows * y + x].neighbouringMines == 0 && coveredMinelessTiles > 0)
+                {
+                    if (x > 0 && y > 0)
+                        RevealNextTiles(x - 1, y - 1);
+                    if (x > 0)
+                        RevealNextTiles(x - 1, y);
+                    if (x > 0 && y < rows - 1)
+                        RevealNextTiles(x - 1, y + 1);
+                    if (y < rows - 1)
+                        RevealNextTiles(x, y + 1);
+                    if (x < area.Count / rows - 1 && y < rows - 1)
+                        RevealNextTiles(x + 1, y + 1);
+                    if (x < area.Count / rows - 1)
+                        RevealNextTiles(x + 1, y);
+                    if (x < area.Count / rows - 1 && y > 0)
+                        RevealNextTiles(x + 1, y - 1);
+                    if (y > 0)
+                        RevealNextTiles(x, y - 1);
+                }
             }
         }
 
@@ -123,17 +137,17 @@ namespace minesweeper
                 tempy = (int)(p.Y - 25) / 30;
                 if (!(area[20 * tempy + tempx].isProtected))
                 {
-                    /*if (area[20 * tempy + tempx].neighbouringMines == 0)
+                    if (area[20 * tempy + tempx].neighbouringMines == 0)
                     {
                         RevealNextTiles(tempx, tempy);
                     }
                     else
-                    {*/
-                        Button clicked = (Button)sender;
-                        clicked.Visibility = Visibility.Hidden;
+                    {
+                        area[area.Count / rows * tempy + tempx].isRevealed = true;
+                        board.AddImage("./Images/" + area[20 * tempy + tempx].neighbouringMines.ToString() + ".png", 30 * tempx, 30 * tempy);
                         coveredMinelessTiles--;
-                        Win();
-                    //}
+                    }
+                    Win();
                 }
                 if (area[20 * tempy + tempx].hasMine && !(area[20 * tempy + tempx].isProtected))
                 {
@@ -156,9 +170,8 @@ namespace minesweeper
                             }
                         }
                     }
-                    MessageBox.Show("You died lol");
+                    MessageBox.Show("You lost!");
                 }
-                //MessageBox.Show(tempx.ToString() + " " + tempy.ToString());
             }
         }
 

@@ -3,13 +3,12 @@ using System.Windows;
 
 namespace minesweeper
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         Board board;
         List<Tile> area = new List<Tile>();
+        int rows;
+        int mines;
         GameLogic gameLogic;
 
         public MainWindow()
@@ -19,10 +18,12 @@ namespace minesweeper
                 area.Add(new Tile());
             }
             board = new Board(canvas);
+            rows = 20;
+            mines = 50;
 
-            gameLogic = new GameLogic(board, area, 50);
+            gameLogic = new GameLogic(board, area, rows, mines);
             gameLogic.area = area;
-            gameLogic.SetArea(area, 20);
+            gameLogic.SetArea(area);
             gameLogic.DrawBoard(board, area);
         }
     }

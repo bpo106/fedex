@@ -39,10 +39,6 @@ namespace minesweeper
             if (!isProtected)
             {
                 isRevealed = true;
-                if (hasMine)
-                {
-                    //ASDASDASDASD
-                }
             }
         }
     }
