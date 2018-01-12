@@ -196,7 +196,11 @@ namespace minesweeper
                 {
                     if (area[i].hasMine)
                     {
-                        board.AddImage("./Images/flag.png", 30 * (i % 20), 30 * (i / 20));
+                        var image = new Image();
+                        var button = new Button() { Width = 30, Height = 30, Content = image };
+                        image.Source = new BitmapImage(new Uri("./Images/flag.png", UriKind.Relative));
+
+                        board.AddButton(button, 30 * (i % 20), 30 * (i / 20));
                     }
                 }
                 MessageBox.Show("You won!");
