@@ -81,16 +81,10 @@ namespace minesweeper
                     button.Click += new RoutedEventHandler(ClickHandlerLeft);
                     button.MouseDown += new MouseButtonEventHandler(ClickHandlerRight);
                     string file;
-                    if (area[20 * j + i].hasMine)
+                    if (!(area[20 * j + i].hasMine))
                     {
-                        board.AddImage("./Images/0.png", 30 * i, 30 * j);
-                        file = "./Images/mine.png";
+                        board.AddImage("./Images/" + area[20 * j + i].neighbouringMines.ToString() + ".png", 30 * i, 30 * j);
                     }
-                    else
-                    {
-                        file = "./Images/" + area[20 * j + i].neighbouringMines.ToString() + ".png";
-                    }
-                    board.AddImage(file, 30 * i, 30 * j);
                     if (!area[20 * j + i].isRevealed)
                     {
                         board.AddButton(button, 30 * i, 30 * j);
@@ -120,12 +114,19 @@ namespace minesweeper
                         {
                             if (area[20 * j + i].hasMine)
                             {
-                                board.AddImage("./Images/0.png", 30 * i, 30 * j);
+                                if (i == tempx && j == tempy)
+                                {
+                                    board.AddImage("./Images/red.png", 30 * i, 30 * j);
+                                }
+                                else
+                                {
+                                    board.AddImage("./Images/0.png", 30 * i, 30 * j);
+                                }
                                 board.AddImage("./Images/mine.png", 30 * i, 30 * j);
                             }
                         }
                     }
-                    MessageBox.Show("You died lol");
+                    //MessageBox.Show("You died lol");
                 }
                 //MessageBox.Show(tempx.ToString() + " " + tempy.ToString());
             }
