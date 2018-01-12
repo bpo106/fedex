@@ -107,8 +107,24 @@ namespace minesweeper
                 Button clicked = (Button)sender;
                 clicked.Visibility = Visibility.Hidden;
             }
+            if (area[20 * tempy + tempx].hasMine && !(area[20 * tempy + tempx].isProtected))
+            {
+                for (int i = 0; i < 20; i++)
+                {
+                    for (int j = 0; j < 20; j++)
+                    {
+                        area[20 * j + i].isProtected = true;
+                        if (area[20 * j + i].hasMine)
+                        {
+                            area[20 * j + i].isRevealed = true;
+                            board.AddImage("./Images/0.png", 30 * i, 30 * j);
+                            board.AddImage("./Images/mine.png", 30 * i, 30 * j);
+                        }
+                    }
+                }
+                MessageBox.Show("You died lol");
+            }
             //MessageBox.Show(tempx.ToString() + " " + tempy.ToString());
-            //átállítja a mező felfedettségi állapotát
         }
 
         private void ClickHandlerRight (object sender, MouseButtonEventArgs e)
