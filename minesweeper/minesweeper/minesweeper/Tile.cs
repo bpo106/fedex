@@ -21,14 +21,6 @@ namespace minesweeper
             isRevealed = false;
         }
 
-        public void SetMine ()
-        {
-            if (!hasMine)
-            {
-                hasMine = true;
-            }
-        }
-
         public void Flag (Board board, int x, int y)
         {
             isProtected = !isProtected;

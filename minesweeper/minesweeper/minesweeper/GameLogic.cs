@@ -44,7 +44,7 @@ namespace minesweeper
                 int y = random.Next(0, rows);
                 if (!(area[rows * y + x].hasMine))
                 {
-                    area[rows * y + x].SetMine();
+                    area[rows * y + x].hasMine = true;
                     mines--;
                 }
             }
