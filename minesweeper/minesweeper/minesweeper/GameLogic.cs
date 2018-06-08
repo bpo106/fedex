@@ -106,24 +106,40 @@ namespace minesweeper
                 board.AddImage("./Images/" + area[20 * y + x].neighbouringMines.ToString() + ".png", 30 * x, 30 * y);
                 coveredMinelessTiles--;
 
-                if (area[area.Count / rows * y + x].neighbouringMines == 0 && coveredMinelessTiles > 0)
+                if (area[area.Count / rows * y + x].neighbouringMines == 0 && coveredMinelessTiles > 0) // Ezt az egészet lehet, hogy áthúzzuk a RevealNextTiles-ba, azt meg kurva sok (na jó, nem olyan sok) paraméterrel megszórjuk 
                 {
-                    if (x > 0 && y > 0)
-                        RevealNextTiles(x - 1, y - 1);
                     if (x > 0)
+                    {
                         RevealNextTiles(x - 1, y);
-                    if (x > 0 && y < rows - 1)
-                        RevealNextTiles(x - 1, y + 1);
+                        if (y > 0)
+                        {
+                            RevealNextTiles(x - 1, y - 1);
+                        }
+                    }
                     if (y < rows - 1)
+                    {
                         RevealNextTiles(x, y + 1);
-                    if (x < area.Count / rows - 1 && y < rows - 1)
-                        RevealNextTiles(x + 1, y + 1);
+                        if (x > 0)
+                        {
+                            RevealNextTiles(x - 1, y + 1);
+                        }
+                    }
                     if (x < area.Count / rows - 1)
+                    {
                         RevealNextTiles(x + 1, y);
-                    if (x < area.Count / rows - 1 && y > 0)
-                        RevealNextTiles(x + 1, y - 1);
+                        if (y < rows - 1)
+                        {
+                            RevealNextTiles(x + 1, y + 1);
+                        }
+                    }
                     if (y > 0)
+                    {
                         RevealNextTiles(x, y - 1);
+                        if (x < area.Count / rows - 1)
+                        {
+                            RevealNextTiles(x + 1, y - 1);
+                        }
+                    }
                 }
             }
         }
