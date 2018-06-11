@@ -61,14 +61,13 @@ namespace minesweeper
 
         void PlaceMines ()
         {
-            var random = new Random();
+            var random = new Random(); // El van baszva a random, ha nem négyzetes a pálya, akkor exceptiont dob, de majd megnézzük
             while (mines > 0)
             {
-                int x = random.Next(0, area.Count/rows);
-                int y = random.Next(0, rows);
-                if (!(area[rows * y + x].hasMine))
+                int place = random.Next(0, area.Count);
+                if (!(area[place].hasMine))
                 {
-                    area[rows * y + x].hasMine = true;
+                    area[place].hasMine = true;
                     mines--;
                 }
             }
@@ -124,7 +123,7 @@ namespace minesweeper
             if (!(area[element].hasMine) && !(area[element].isRevealed) && !(area[element].isProtected))
             {
                 area[element].isRevealed = true;
-                board.AddImage("./Images/" + area[element].neighbouringMines.ToString() + ".png", 30 * (element % rows), 30 * (element / rows));
+                board.AddImage("./Images/" + area[element].neighbouringMines.ToString() + ".png", 30 * (element % (area.Count / rows)), 30 * (element / (area.Count / rows)));
                 coveredMinelessTiles--;
 
                 if (area[element].neighbouringMines == 0 && coveredMinelessTiles > 0) // Ezt az egészet lehet, hogy áthúzzuk a RevealNextTiles-ba, azt meg kurva sok (na jó, nem olyan sok) paraméterrel megszórjuk 
@@ -222,9 +221,9 @@ namespace minesweeper
                     Point p = Mouse.GetPosition(canvas);
                     tempx = (int)(p.X - 25) / 30;
                     tempy = (int)(p.Y - 25) / 30;
-                    area[20 * tempy + tempx].Flag(board, tempx, tempy);
+                    area[area.Count / rows * tempy + tempx].Flag(board, tempx, tempy);
                     var image = new Image();
-                    if (area[20 * tempy + tempx].isProtected)
+                    if (area[area.Count / rows * tempy + tempx].isProtected)
                     {
                         image.Source = new BitmapImage(new Uri("./Images/flag.png", UriKind.Relative));
                     }

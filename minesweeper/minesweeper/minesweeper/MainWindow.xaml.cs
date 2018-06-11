@@ -14,12 +14,12 @@ namespace minesweeper
         public MainWindow()
         {
             InitializeComponent();
-            for (int i = 0; i < 400; i++) {
+            for (int i = 0; i < 100; i++) {
                 area.Add(new Tile());
             }
             board = new Board(canvas);
-            rows = 20;
-            mines = 50;
+            rows = 10;
+            mines = 10;
 
             gameLogic = new GameLogic(board, area, rows, mines);
             gameLogic.area = area;
