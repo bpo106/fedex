@@ -23,7 +23,7 @@ namespace minesweeper
 
             gameLogic = new GameLogic(board, area, rows, mines);
             gameLogic.area = area;
-            gameLogic.SetArea(area);
+            gameLogic.SetArea();
             gameLogic.DrawBoard(board, area);
         }
     }

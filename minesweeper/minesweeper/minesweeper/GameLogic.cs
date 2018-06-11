@@ -29,10 +29,34 @@ namespace minesweeper
             coveredMinelessTiles = area.Count - mines;
         }
 
-        public void SetArea(List<Tile> area)
+        public void SetArea()
         {
+            SetPosition();
             PlaceMines();
             SetValues();
+        }
+
+        void SetPosition()
+        {
+            for (int i = 0; i < area.Count; i++)
+            {
+                if (i < rows)
+                {
+                    area[i].farUp = true;
+                }
+                if (i % rows == 0)
+                {
+                    area[i].farLeft = true;
+                }
+                if ((i + 1) % rows == 0)
+                {
+                    area[i].farRight = true;
+                }
+                if (i >= area.Count - rows)
+                {
+                    area[i].farDown = true;
+                }
+            }
         }
 
         void PlaceMines ()

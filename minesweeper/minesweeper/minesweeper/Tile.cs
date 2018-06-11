@@ -23,6 +23,10 @@ namespace minesweeper
             isProtected = false;
             neighbouringMines = 0;
             isRevealed = false;
+            farDown = false;
+            farLeft = false;
+            farRight = false;
+            farUp = false;
         }
 
         public void Flag (Board board, int x, int y)
