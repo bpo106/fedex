@@ -171,28 +171,28 @@ namespace minesweeper
                 Point p = Mouse.GetPosition(canvas);
                 tempx = (int)(p.X - 25) / 30;
                 tempy = (int)(p.Y - 25) / 30;
-                if (!(area[(area.Count / rows) * tempy + tempx].isProtected))
+                if (!(area[area.Count / rows * tempy + tempx].isProtected))
                 {
-                    if (area[(area.Count / rows) * tempy + tempx].neighbouringMines == 0)
+                    if (area[area.Count / rows * tempy + tempx].neighbouringMines == 0)
                     {
-                        RevealNextTiles((area.Count / rows) * tempy + tempx);
+                        RevealNextTiles(area.Count / rows * tempy + tempx);
                     }
                     else
                     {
-                        area[(area.Count / rows) * tempy + tempx].isRevealed = true;
-                        board.AddImage("./Images/" + area[(area.Count / rows) * tempy + tempx].neighbouringMines.ToString() + ".png", 30 * tempx, 30 * tempy);
+                        area[area.Count / rows * tempy + tempx].isRevealed = true;
+                        board.AddImage("./Images/" + area[area.Count / rows * tempy + tempx].neighbouringMines.ToString() + ".png", 30 * tempx, 30 * tempy);
                         coveredMinelessTiles--;
                     }
                     Win();
                 }
-                if (area[(area.Count / rows) * tempy + tempx].hasMine && !(area[(area.Count / rows) * tempy + tempx].isProtected))
+                if (area[area.Count / rows * tempy + tempx].hasMine && !(area[area.Count / rows * tempy + tempx].isProtected))
                 {
                     amIEnded = true;
                     for (int i = 0; i < area.Count / rows; i++)
                     {
                         for (int j = 0; j < rows; j++)
                         {
-                            if (area[rows * j + i].hasMine)
+                            if (area[area.Count / rows * j + i].hasMine)
                             {
                                 string path;
                                 if (i == tempx && j == tempy)
