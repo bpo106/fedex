@@ -76,19 +76,16 @@ namespace minesweeper
 
         void SetValues ()
         {
-            for (int i = 0; i < area.Count / rows; i++)
+            for (int i = 0; i < area.Count; i++) // Ez cseszettül undorító, mert nyolcszor csinálja ugyanazt, szóval majd lesz rá egy külön függvény
             {
-                for (int j = 0; j < rows; j++)
-                {
-                    if (i * j > 0 && area[rows * (j - 1) + i - 1].hasMine) area[rows * j + i].neighbouringMines++; // i > 0 && j > 0
-                    if (j > 0 && area[rows * (j - 1) + i].hasMine) area[rows * j + i].neighbouringMines++; // i > -1 && j > 0
-                    if (j > 0 && i < area.Count / rows - 1 && area[rows * (j - 1) + i + 1].hasMine) area[rows * j + i].neighbouringMines++;
-                    if (i < area.Count / rows - 1 && area[rows * j + i + 1].hasMine) area[rows * j + i].neighbouringMines++;  // i < area.Count / rows - 1 && j < rows
-                    if (i < area.Count / rows - 1 && j < rows - 1 && area[rows * (j + 1) + i + 1].hasMine) area[rows * j + i].neighbouringMines++;
-                    if (j < rows - 1 && area[rows * (j + 1) + i].hasMine) area[rows * j + i].neighbouringMines++; // i < area.Count / rows && j < rows - 1
-                    if (i > 0 && j < rows - 1 && area[rows * (j + 1) + i - 1].hasMine) area[rows * j + i].neighbouringMines++;
-                    if (i > 0 && area[rows * j + i - 1].hasMine) area[rows * j + i].neighbouringMines++; // i > 0 && j > -1
-                }
+                if (!(area[i].farLeft || area[i].farUp) && area[i - area.Count / rows - 1].hasMine) area[i].neighbouringMines++;
+                if (!(area[i].farLeft || area[i].farDown) && area[i + area.Count / rows - 1].hasMine) area[i].neighbouringMines++;
+                if (!(area[i].farRight || area[i].farDown) && area[i + area.Count / rows + 1].hasMine) area[i].neighbouringMines++;
+                if (!(area[i].farRight || area[i].farUp) && area[i - area.Count / rows + 1].hasMine) area[i].neighbouringMines++;
+                if (!area[i].farLeft && area[i - 1].hasMine) area[i].neighbouringMines++;
+                if (!area[i].farUp && area[i - area.Count / rows].hasMine) area[i].neighbouringMines++;
+                if (!area[i].farDown && area[i + area.Count / rows].hasMine) area[i].neighbouringMines++;
+                if (!area[i].farRight && area[i + 1].hasMine) area[i].neighbouringMines++;
             }
         }
 
