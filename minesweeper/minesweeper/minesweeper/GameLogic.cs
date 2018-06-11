@@ -122,46 +122,46 @@ namespace minesweeper
             }
         }
 
-        private void RevealNextTiles (int x, int y) //Ez egyparaméteres lesz
+        private void RevealNextTiles (int element)
         {
-            if (!(area[area.Count / rows * y + x].hasMine) && !(area[area.Count / rows * y + x].isRevealed) && !(area[rows * y + x].isProtected))
+            if (!(area[element].hasMine) && !(area[element].isRevealed) && !(area[element].isProtected))
             {
-                area[area.Count / rows * y + x].isRevealed = true;
-                board.AddImage("./Images/" + area[rows * y + x].neighbouringMines.ToString() + ".png", 30 * x, 30 * y);
+                area[element].isRevealed = true;
+                board.AddImage("./Images/" + area[element].neighbouringMines.ToString() + ".png", 30 * (element % rows), 30 * (element / rows));
                 coveredMinelessTiles--;
 
-                if (area[area.Count / rows * y + x].neighbouringMines == 0 && coveredMinelessTiles > 0) // Ezt az egészet lehet, hogy áthúzzuk a RevealNextTiles-ba, azt meg kurva sok (na jó, nem olyan sok) paraméterrel megszórjuk 
+                if (area[element].neighbouringMines == 0 && coveredMinelessTiles > 0) // Ezt az egészet lehet, hogy áthúzzuk a RevealNextTiles-ba, azt meg kurva sok (na jó, nem olyan sok) paraméterrel megszórjuk 
                 {
-                    if (x > 0)
+                    if (!area[element].farLeft)
                     {
-                        RevealNextTiles(x - 1, y);
-                        if (y > 0)
+                        RevealNextTiles(element - 1);
+                        if (!area[element].farUp)
                         {
-                            RevealNextTiles(x - 1, y - 1);
+                            RevealNextTiles(element - (area.Count / rows) - 1);
                         }
                     }
-                    if (y < rows - 1)
+                    if (!area[element].farDown)
                     {
-                        RevealNextTiles(x, y + 1);
-                        if (x > 0)
+                        RevealNextTiles(element + (area.Count / rows));
+                        if (!area[element].farLeft)
                         {
-                            RevealNextTiles(x - 1, y + 1);
+                            RevealNextTiles(element + (area.Count / rows) - 1);
                         }
                     }
-                    if (x < area.Count / rows - 1)
+                    if (!area[element].farRight)
                     {
-                        RevealNextTiles(x + 1, y);
-                        if (y < rows - 1)
+                        RevealNextTiles(element + 1);
+                        if (!area[element].farDown)
                         {
-                            RevealNextTiles(x + 1, y + 1);
+                            RevealNextTiles(element + (area.Count / rows) + 1);
                         }
                     }
-                    if (y > 0)
+                    if (!area[element].farUp)
                     {
-                        RevealNextTiles(x, y - 1);
-                        if (x < area.Count / rows - 1)
+                        RevealNextTiles(element - (area.Count / rows));
+                        if (!area[element].farRight)
                         {
-                            RevealNextTiles(x + 1, y - 1);
+                            RevealNextTiles(element - (area.Count / rows) + 1);
                         }
                     }
                 }
@@ -179,7 +179,7 @@ namespace minesweeper
                 {
                     if (area[rows * tempy + tempx].neighbouringMines == 0)
                     {
-                        RevealNextTiles(tempx, tempy);
+                        RevealNextTiles(rows * tempy + tempx);
                     }
                     else
                     {
