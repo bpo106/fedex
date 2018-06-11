@@ -122,7 +122,7 @@ namespace minesweeper
             }
         }
 
-        private void RevealNextTiles (int x, int y)
+        private void RevealNextTiles (int x, int y) //Ez egyparaméteres lesz
         {
             if (!(area[area.Count / rows * y + x].hasMine) && !(area[area.Count / rows * y + x].isRevealed) && !(area[20 * y + x].isProtected))
             {
@@ -175,9 +175,9 @@ namespace minesweeper
                 Point p = Mouse.GetPosition(canvas);
                 tempx = (int)(p.X - 25) / 30;
                 tempy = (int)(p.Y - 25) / 30;
-                if (!(area[20 * tempy + tempx].isProtected))
+                if (!(area[rows * tempy + tempx].isProtected))
                 {
-                    if (area[20 * tempy + tempx].neighbouringMines == 0)
+                    if (area[rows * tempy + tempx].neighbouringMines == 0)
                     {
                         RevealNextTiles(tempx, tempy);
                     }
