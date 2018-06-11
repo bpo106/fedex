@@ -194,14 +194,16 @@ namespace minesweeper
                         {
                             if (area[rows * j + i].hasMine)
                             {
+                                string path;
                                 if (i == tempx && j == tempy)
                                 {
-                                    board.AddImage("./Images/red.png", 30 * i, 30 * j);
+                                    path = "./Images/red.png";
                                 }
                                 else
                                 {
-                                    board.AddImage("./Images/0.png", 30 * i, 30 * j);
+                                    path = "./Images/0.png";
                                 }
+                                board.AddImage(path, 30 * i, 30 * j);
                                 board.AddImage("./Images/mine.png", 30 * i, 30 * j);
                             }
                         }
