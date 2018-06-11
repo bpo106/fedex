@@ -124,10 +124,10 @@ namespace minesweeper
 
         private void RevealNextTiles (int x, int y) //Ez egyparaméteres lesz
         {
-            if (!(area[area.Count / rows * y + x].hasMine) && !(area[area.Count / rows * y + x].isRevealed) && !(area[20 * y + x].isProtected))
+            if (!(area[area.Count / rows * y + x].hasMine) && !(area[area.Count / rows * y + x].isRevealed) && !(area[rows * y + x].isProtected))
             {
                 area[area.Count / rows * y + x].isRevealed = true;
-                board.AddImage("./Images/" + area[20 * y + x].neighbouringMines.ToString() + ".png", 30 * x, 30 * y);
+                board.AddImage("./Images/" + area[rows * y + x].neighbouringMines.ToString() + ".png", 30 * x, 30 * y);
                 coveredMinelessTiles--;
 
                 if (area[area.Count / rows * y + x].neighbouringMines == 0 && coveredMinelessTiles > 0) // Ezt az egészet lehet, hogy áthúzzuk a RevealNextTiles-ba, azt meg kurva sok (na jó, nem olyan sok) paraméterrel megszórjuk 
@@ -184,19 +184,19 @@ namespace minesweeper
                     else
                     {
                         area[area.Count / rows * tempy + tempx].isRevealed = true;
-                        board.AddImage("./Images/" + area[20 * tempy + tempx].neighbouringMines.ToString() + ".png", 30 * tempx, 30 * tempy);
+                        board.AddImage("./Images/" + area[rows * tempy + tempx].neighbouringMines.ToString() + ".png", 30 * tempx, 30 * tempy);
                         coveredMinelessTiles--;
                     }
                     Win();
                 }
-                if (area[20 * tempy + tempx].hasMine && !(area[20 * tempy + tempx].isProtected))
+                if (area[rows * tempy + tempx].hasMine && !(area[rows * tempy + tempx].isProtected))
                 {
                     amIEnded = true;
-                    for (int i = 0; i < 20; i++)
+                    for (int i = 0; i < rows; i++)
                     {
-                        for (int j = 0; j < 20; j++)
+                        for (int j = 0; j < area.Count / rows; j++)
                         {
-                            if (area[20 * j + i].hasMine)
+                            if (area[rows * j + i].hasMine)
                             {
                                 if (i == tempx && j == tempy)
                                 {
@@ -253,7 +253,7 @@ namespace minesweeper
                         var button = new Button() { Width = 30, Height = 30, Content = image };
                         image.Source = new BitmapImage(new Uri("./Images/flag.png", UriKind.Relative));
 
-                        board.AddButton(button, 30 * (i % 20), 30 * (i / 20));
+                        board.AddButton(button, 30 * (i % (area.Count / rows)), 30 * (i / rows));
                     }
                 }
                 MessageBox.Show("You won!");
