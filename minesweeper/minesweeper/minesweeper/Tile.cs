@@ -12,6 +12,10 @@ namespace minesweeper
         public bool isProtected;
         public int neighbouringMines;
         public bool isRevealed;
+        public bool farRight;
+        public bool farLeft;
+        public bool farUp;
+        public bool farDown;
 
         public Tile()
         {
