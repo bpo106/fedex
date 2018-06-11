@@ -40,19 +40,19 @@ namespace minesweeper
         {
             for (int i = 0; i < area.Count; i++)
             {
-                if (i < rows)
+                if (i < (area.Count / rows))
                 {
                     area[i].farUp = true;
                 }
-                if (i % rows == 0)
+                if (i % (area.Count / rows) == 0)
                 {
                     area[i].farLeft = true;
                 }
-                if ((i + 1) % rows == 0)
+                if ((i + 1) % (area.Count / rows) == 0)
                 {
                     area[i].farRight = true;
                 }
-                if (i >= area.Count - rows)
+                if (i >= area.Count - (area.Count / rows))
                 {
                     area[i].farDown = true;
                 }
@@ -164,33 +164,33 @@ namespace minesweeper
             }
         }
 
-        private void ClickHandlerLeft(object sender, RoutedEventArgs e)
+        private void ClickHandlerLeft(object sender, RoutedEventArgs e) // Indexelést kurvára át kell írni, most négyzetesre működik
         {
             if (!amIEnded)
             {
                 Point p = Mouse.GetPosition(canvas);
                 tempx = (int)(p.X - 25) / 30;
                 tempy = (int)(p.Y - 25) / 30;
-                if (!(area[rows * tempy + tempx].isProtected))
+                if (!(area[(area.Count / rows) * tempy + tempx].isProtected))
                 {
-                    if (area[rows * tempy + tempx].neighbouringMines == 0)
+                    if (area[(area.Count / rows) * tempy + tempx].neighbouringMines == 0)
                     {
-                        RevealNextTiles(rows * tempy + tempx);
+                        RevealNextTiles((area.Count / rows) * tempy + tempx);
                     }
                     else
                     {
-                        area[area.Count / rows * tempy + tempx].isRevealed = true;
-                        board.AddImage("./Images/" + area[rows * tempy + tempx].neighbouringMines.ToString() + ".png", 30 * tempx, 30 * tempy);
+                        area[(area.Count / rows) * tempy + tempx].isRevealed = true;
+                        board.AddImage("./Images/" + area[(area.Count / rows) * tempy + tempx].neighbouringMines.ToString() + ".png", 30 * tempx, 30 * tempy);
                         coveredMinelessTiles--;
                     }
                     Win();
                 }
-                if (area[rows * tempy + tempx].hasMine && !(area[rows * tempy + tempx].isProtected))
+                if (area[(area.Count / rows) * tempy + tempx].hasMine && !(area[(area.Count / rows) * tempy + tempx].isProtected))
                 {
                     amIEnded = true;
-                    for (int i = 0; i < rows; i++)
+                    for (int i = 0; i < area.Count / rows; i++)
                     {
-                        for (int j = 0; j < area.Count / rows; j++)
+                        for (int j = 0; j < rows; j++)
                         {
                             if (area[rows * j + i].hasMine)
                             {
