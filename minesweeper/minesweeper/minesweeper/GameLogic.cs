@@ -183,7 +183,10 @@ namespace minesweeper
                         board.AddImage("./Images/" + area[area.Count / rows * tempy + tempx].neighbouringMines.ToString() + ".png", 30 * tempx, 30 * tempy);
                         coveredMinelessTiles--;
                     }
-                    Win();
+                    if (!area[area.Count / rows * tempy + tempx].hasMine)
+                    {
+                        Win();
+                    }
                 }
                 if (area[area.Count / rows * tempy + tempx].hasMine && !(area[area.Count / rows * tempy + tempx].isProtected))
                 {
