@@ -36,7 +36,7 @@ namespace minesweeper
             SetValues();
         }
 
-        void SetPosition()
+        void SetPosition() // Szépen beállítja az összes mezőre, hogy szélsőbaloldali, vagy szélsőjobboldali...izé...szóval értitek, na.
         {
             for (int i = 0; i < area.Count; i++)
             {
@@ -61,7 +61,7 @@ namespace minesweeper
 
         void PlaceMines ()
         {
-            var random = new Random(); // El van baszva a random, ha nem négyzetes a pálya, akkor exceptiont dob, de majd megnézzük
+            var random = new Random();
             while (mines > 0)
             {
                 int place = random.Next(0, area.Count);
@@ -75,16 +75,24 @@ namespace minesweeper
 
         void SetValues ()
         {
-            for (int i = 0; i < area.Count; i++) // Ez cseszettül undorító, mert nyolcszor csinálja ugyanazt, szóval majd lesz rá egy külön függvény
+            for (int i = 0; i < area.Count; i++)
             {
-                if (!(area[i].farLeft || area[i].farUp) && area[i - area.Count / rows - 1].hasMine) area[i].neighbouringMines++;
-                if (!(area[i].farLeft || area[i].farDown) && area[i + area.Count / rows - 1].hasMine) area[i].neighbouringMines++;
-                if (!(area[i].farRight || area[i].farDown) && area[i + area.Count / rows + 1].hasMine) area[i].neighbouringMines++;
-                if (!(area[i].farRight || area[i].farUp) && area[i - area.Count / rows + 1].hasMine) area[i].neighbouringMines++;
-                if (!area[i].farLeft && area[i - 1].hasMine) area[i].neighbouringMines++;
-                if (!area[i].farUp && area[i - area.Count / rows].hasMine) area[i].neighbouringMines++;
-                if (!area[i].farDown && area[i + area.Count / rows].hasMine) area[i].neighbouringMines++;
-                if (!area[i].farRight && area[i + 1].hasMine) area[i].neighbouringMines++;
+                bool[] positions = new bool[] {
+                !(area[i].farLeft || area[i].farUp) && area[i - area.Count / rows - 1].hasMine,
+                !(area[i].farLeft || area[i].farDown) && area[i + area.Count / rows - 1].hasMine,
+                !(area[i].farRight || area[i].farDown) && area[i + area.Count / rows + 1].hasMine,
+                !(area[i].farRight || area[i].farUp) && area[i - area.Count / rows + 1].hasMine,
+                !area[i].farLeft && area[i - 1].hasMine,
+                !area[i].farUp && area[i - area.Count / rows].hasMine,
+                !area[i].farDown && area[i + area.Count / rows].hasMine,
+                !area[i].farRight && area[i + 1].hasMine};
+                for (int j = 0; j < positions.Length; j++)
+                {
+                    if (positions[j])
+                    {
+                        area[i].neighbouringMines++;
+                    }
+                }
             }
         }
 
@@ -164,7 +172,7 @@ namespace minesweeper
             }
         }
 
-        private void ClickHandlerLeft(object sender, RoutedEventArgs e) // Indexelést kurvára át kell írni, most négyzetesre működik
+        private void ClickHandlerLeft(object sender, RoutedEventArgs e)
         {
             if (!amIEnded)
             {
@@ -241,7 +249,7 @@ namespace minesweeper
             }
         }
 
-        private void Win() // Van egy eset, ahol az utolsó kattintást basszuk el, és akkor egyszerre vesztünk és nyerünk. Ez így nem maradhat.
+        private void Win()
         {
             if (coveredMinelessTiles == 0)
             {
