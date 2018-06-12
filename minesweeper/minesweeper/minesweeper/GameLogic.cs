@@ -238,7 +238,7 @@ namespace minesweeper
             }
         }
 
-        private void Win()
+        private void Win() // Van egy eset, ahol az utolsó kattintást basszuk el, és akkor egyszerre vesztünk és nyerünk. Ez így nem maradhat.
         {
             if (coveredMinelessTiles == 0)
             {
