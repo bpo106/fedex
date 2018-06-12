@@ -251,7 +251,7 @@ namespace minesweeper
                         var button = new Button() { Width = 30, Height = 30, Content = image };
                         image.Source = new BitmapImage(new Uri("./Images/flag.png", UriKind.Relative));
 
-                        board.AddButton(button, 30 * (i % (area.Count / rows)), 30 * (i / rows));
+                        board.AddButton(button, 30 * (i % (area.Count / rows)), 30 * (i / (area.Count / rows)));
                     }
                 }
                 MessageBox.Show("You won!");
