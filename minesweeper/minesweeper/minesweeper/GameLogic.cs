@@ -13,6 +13,7 @@ namespace minesweeper
         public List<Tile> area;
         private int rows;
         private IInputElement canvas;
+        private int temp;
         private int tempx;
         private int tempy;
         private bool amIEnded;
@@ -179,24 +180,25 @@ namespace minesweeper
                 Point p = Mouse.GetPosition(canvas);
                 tempx = (int)(p.X - 25) / 30;
                 tempy = (int)(p.Y - 25) / 30;
-                if (!(area[area.Count / rows * tempy + tempx].isProtected))
+                temp = area.Count / rows * tempy + tempx;
+                if (!(area[temp].isProtected))
                 {
-                    if (area[area.Count / rows * tempy + tempx].neighbouringMines == 0)
+                    if (area[temp].neighbouringMines == 0)
                     {
-                        RevealNextTiles(area.Count / rows * tempy + tempx);
+                        RevealNextTiles(temp);
                     }
                     else
                     {
                         area[area.Count / rows * tempy + tempx].isRevealed = true;
-                        board.AddImage("./Images/" + area[area.Count / rows * tempy + tempx].neighbouringMines.ToString() + ".png", 30 * tempx, 30 * tempy);
+                        board.AddImage("./Images/" + area[temp].neighbouringMines.ToString() + ".png", 30 * tempx, 30 * tempy);
                         coveredMinelessTiles--;
                     }
-                    if (!area[area.Count / rows * tempy + tempx].hasMine)
+                    if (!area[temp].hasMine)
                     {
                         Win();
                     }
                 }
-                if (area[area.Count / rows * tempy + tempx].hasMine && !(area[area.Count / rows * tempy + tempx].isProtected))
+                if (area[temp].hasMine && !(area[temp].isProtected))
                 {
                     amIEnded = true;
                     for (int i = 0; i < area.Count / rows; i++)
@@ -234,9 +236,10 @@ namespace minesweeper
                     Point p = Mouse.GetPosition(canvas);
                     tempx = (int)(p.X - 25) / 30;
                     tempy = (int)(p.Y - 25) / 30;
-                    area[area.Count / rows * tempy + tempx].Flag(board, tempx, tempy);
+                    temp = area.Count / rows * tempy + tempx;
+                    area[temp].Flag(board, tempx, tempy);
                     var image = new Image();
-                    if (area[area.Count / rows * tempy + tempx].isProtected)
+                    if (area[temp].isProtected)
                     {
                         image.Source = new BitmapImage(new Uri("./Images/flag.png", UriKind.Relative));
                     }

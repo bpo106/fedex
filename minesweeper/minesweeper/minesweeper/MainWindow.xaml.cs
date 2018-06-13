@@ -19,7 +19,7 @@ namespace minesweeper
             }
             board = new Board(canvas);
             rows = 20;
-            mines = 20;
+            mines = 50;
 
             gameLogic = new GameLogic(board, area, rows, mines);
             gameLogic.area = area;
