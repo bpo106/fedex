@@ -11,8 +11,8 @@ namespace minesweeper
     {
         public Board board;
         public List<Tile> area;
-        private int rows;
-        private IInputElement canvas;
+        private readonly int rows;
+        private readonly IInputElement canvas;
         private int temp;
         private int tempx;
         private int tempy;
@@ -37,7 +37,7 @@ namespace minesweeper
             SetValues();
         }
 
-        void SetPosition() // Szépen beállítja az összes mezőre, hogy szélsőbaloldali, vagy szélsőjobboldali...izé...szóval értitek, na.
+        void SetPosition()
         {
             for (int i = 0; i < area.Count; i++)
             {
@@ -207,15 +207,7 @@ namespace minesweeper
                         {
                             if (area[area.Count / rows * j + i].hasMine)
                             {
-                                string path;
-                                if (i == tempx && j == tempy)
-                                {
-                                    path = "./Images/red.png";
-                                }
-                                else
-                                {
-                                    path = "./Images/0.png";
-                                }
+                                string path = i == tempx && j == tempy ? "./Images/red.png" : "./Images/0.png";
                                 board.AddImage(path, 30 * i, 30 * j);
                                 board.AddImage("./Images/mine.png", 30 * i, 30 * j);
                             }
@@ -239,14 +231,8 @@ namespace minesweeper
                     temp = area.Count / rows * tempy + tempx;
                     area[temp].Flag(board, tempx, tempy);
                     var image = new Image();
-                    if (area[temp].isProtected)
-                    {
-                        image.Source = new BitmapImage(new Uri("./Images/flag.png", UriKind.Relative));
-                    }
-                    else
-                    {
-                        image.Source = new BitmapImage(new Uri("./Images/button.png", UriKind.Relative));
-                    }
+                    string path = area[temp].isProtected ? "./Images/flag.png" : "./Images/button.png";
+                    image.Source = new BitmapImage(new Uri(path, UriKind.Relative));
                     clicked.Content = image;
                 }
             }
